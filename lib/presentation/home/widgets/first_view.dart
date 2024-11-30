@@ -18,123 +18,165 @@ class _FirstViewState extends State<FirstView> {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         if (state is HomeLoaded) {
-          return Container(
-            padding: const EdgeInsets.only(top: 35, left: 25, right: 25),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-              color: Theme.of(context).cardColor,
-            ),
-            child: Column(children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    state.dataEntity.items[0].openState!.body!.title.toString(),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    state.dataEntity.items[0].openState!.body!.subtitle
-                        .toString(),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
+          final items = state.dataEntity.items;
+
+          final openState = items[0].openState!;
+          final body = openState.body!;
+          final card = body.card!;
+          return Column(
+            children: [
               Expanded(
                 child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 0, vertical: 25),
+                  padding: const EdgeInsets.only(top: 35, left: 25, right: 25),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.white,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                    color: Theme.of(context).cardColor,
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(
-                        child: SleekCircularSlider(
-                          appearance: CircularSliderAppearance(
-                            size: 250,
-                            startAngle: 275,
-                            angleRange: 360,
-                            customWidths: CustomSliderWidths(
-                              progressBarWidth: 20,
-                              trackWidth: 20,
-                              handlerSize: 22,
-                            ),
-                            customColors: CustomSliderColors(
-                              dotColor: Colors.black.withOpacity(0.8),
-                              trackColor: Colors.orange.withOpacity(0.4),
-                              progressBarColor: Colors.orange,
-                            ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            body.title.toString(),
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
-                          min: state.dataEntity.items[0].openState!.body!.card!
-                              .minRange!
-                              .toDouble(),
-                          max: state.dataEntity.items[0].openState!.body!.card!
-                              .maxRange!
-                              .toDouble(),
-                          initialValue: 150000,
-                          onChange: (value) {
-                            setState(() {
-                              changeValue = value.toInt();
-                            });
-                          },
-                          innerWidget: (percentage) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    state.dataEntity.items[0].openState!.body!
-                                        .card!.header
-                                        .toString(),
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.grey.shade600,
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            body.subtitle.toString(),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 25),
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 65),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white,
+                          ),
+                          child: Stack(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: SleekCircularSlider(
+                                  appearance: CircularSliderAppearance(
+                                    size: 250,
+                                    startAngle: 275,
+                                    angleRange: 360,
+                                    customWidths: CustomSliderWidths(
+                                      progressBarWidth: 20,
+                                      trackWidth: 20,
+                                      handlerSize: 22,
+                                    ),
+                                    customColors: CustomSliderColors(
+                                      hideShadow: true,
+                                      dotColor: Colors.black.withOpacity(0.8),
+                                      trackColor:
+                                          Colors.orange.withOpacity(0.4),
+                                      progressBarColor: Colors.orange,
                                     ),
                                   ),
-                                  Text(
-                                    "\$ $changeValue",
-                                    style: const TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Text(
-                                    state.dataEntity.items[0].openState!.body!
-                                        .card!.description
-                                        .toString(),
-                                    style: const TextStyle(
-                                      color: Color.fromARGB(255, 120, 177, 122),
-                                    ),
-                                  ),
-                                ],
+                                  min: card.minRange!.toDouble(),
+                                  max: card.maxRange!.toDouble(),
+                                  initialValue: 150000,
+                                  onChange: (value) {
+                                    setState(() {
+                                      changeValue = value.toInt();
+                                    });
+                                  },
+                                  innerWidget: (percentage) {
+                                    return Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            card.header.toString(),
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey.shade600,
+                                            ),
+                                          ),
+                                          Text(
+                                            "₹ $changeValue".splitMapJoin(
+                                              RegExp(
+                                                  r'\B(?=(\d{3})+(?!\d))'), // Inserts commas for Indian numbering
+                                              onMatch: (match) => ',',
+                                              onNonMatch: (nonMatch) =>
+                                                  nonMatch,
+                                            ),
+                                            style: const TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            card.description.toString(),
+                                            style: const TextStyle(
+                                              color: Color(0xFF78B17A),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                            );
-                          },
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 30,
+                                    vertical: 20,
+                                  ),
+                                  child: Text(
+                                    body.footer.toString(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.grey.shade600,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                      Text(state.dataEntity.items[0].openState!.body!.footer
-                          .toString())
                     ],
                   ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  state.dataEntity.items[0].ctaText!.toString(),
-                  style: Theme.of(context).textTheme.titleMedium,
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                    ),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    items[0].ctaText.toString(),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
               ),
-            ]),
+            ],
           );
         }
         if (state is HomeLoading) {
