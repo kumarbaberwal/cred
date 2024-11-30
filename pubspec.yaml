@@ -41,6 +41,7 @@ dependencies:
   dio: ^5.7.0
   logger: ^2.5.0
   get_it: ^8.0.2
+  sleek_circular_slider: ^2.0.1
 
 dev_dependencies:
   flutter_test:
