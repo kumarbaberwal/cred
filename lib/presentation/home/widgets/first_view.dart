@@ -1,5 +1,6 @@
 import 'package:cred/presentation/home/cubit/home_cubit.dart';
 import 'package:cred/presentation/home/cubit/home_state.dart';
+import 'package:cred/presentation/home/cubit/view_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -157,22 +158,27 @@ class _FirstViewState extends State<FirstView> {
               ),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                    ),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
+                child: BlocProvider(
+                  create: (context) => ViewCubit(),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      context.read<ViewCubit>().showSecondView();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                      ),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(25),
+                        ),
                       ),
                     ),
-                  ),
-                  child: Text(
-                    items[0].ctaText.toString(),
-                    style: Theme.of(context).textTheme.titleMedium,
+                    child: Text(
+                      items[0].ctaText.toString(),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
                 ),
               ),

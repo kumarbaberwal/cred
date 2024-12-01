@@ -12,7 +12,9 @@ class DataApiService extends DataApi {
   @override
   Future<Either> getData() async {
     try {
-      var response = await sl<DioClient>().get(ApiUrls.baseUrl);
+      var response = await sl<DioClient>().get(
+        ApiUrls.baseUrl,
+      );
       return Right(response);
     } on DioException catch (e) {
       return Left(e);

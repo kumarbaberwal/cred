@@ -41,8 +41,7 @@ class DataMapper {
   }
 
   // Map `ClosedStateBody` to `ClosedStateBodyEntity`
-  static ClosedStateBodyEntity toEntityClosedStateBody(
-      ClosedStateBody body) {
+  static ClosedStateBodyEntity toEntityClosedStateBody(ClosedStateBody body) {
     return ClosedStateBodyEntity(
       key1: body.key1,
       key2: body.key2,
@@ -50,7 +49,8 @@ class DataMapper {
   }
 
   // Map `DataModelItem` to `DataModelItemEntity`
-  static DataModelItemEntity toEntityDataModelItem(DataModelItem dataModelItem) {
+  static DataModelItemEntity toEntityDataModelItem(
+      DataModelItem dataModelItem) {
     return DataModelItemEntity(
       openState: dataModelItem.openState != null
           ? toEntityOpenState(dataModelItem.openState!)
